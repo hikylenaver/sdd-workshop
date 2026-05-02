@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Layer Separation: Domain/business logic is isolated from CLI adapters and I/O formatting.
+- Test-First Evidence: Planned tests are defined before implementation tasks; failing-first strategy is explicit.
+- Dependency Minimalism: Every new dependency includes necessity and alternative analysis.
+- Simplicity First: No speculative abstraction; complexity is justified in "Complexity Tracking" when present.
+- CLI Scope Boundary: Deliverable is CLI-only; no REST API, GUI, or web interface artifacts are introduced.
 
 ## Project Structure
 

@@ -95,6 +95,13 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### Constitution Alignment *(mandatory)*
+
+- **CA-001 (CLI Scope)**: Feature scope MUST remain CLI-first and exclude REST API, GUI, and web UI deliverables.
+- **CA-002 (Test-First)**: Specification MUST define how each user story is validated with tests before implementation.
+- **CA-003 (Layer Separation)**: Requirements MUST distinguish domain behavior from CLI input/output concerns.
+- **CA-004 (Dependency Review)**: Any required external package MUST include explicit necessity rationale.
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]
