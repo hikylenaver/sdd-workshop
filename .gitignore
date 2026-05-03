@@ -5,3 +5,7 @@ node_modules/
 .DS_Store
 d01/
 .vscode/
+d02/
+.coverage
+todo.db
+uv.lock
