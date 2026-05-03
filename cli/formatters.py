@@ -6,12 +6,14 @@ def fmt_todo_row(todo: Todo) -> str:
     """단일 Todo를 한 줄 문자열로 포맷한다."""
     due = todo.due_date or "-"
     priority = todo.priority or "-"
-    return f"[{todo.id}] {todo.title}  due={due}  priority={priority}  status={todo.status}"
+    tags_str = f"[{', '.join(todo.tags)}]" if todo.tags else "[]"
+    return f"[{todo.id}] {todo.title}  due={due}  priority={priority}  status={todo.status}  tags={tags_str}"
 
 
 def fmt_add_success(todo: Todo) -> str:
     """추가 성공 메시지."""
-    return f"추가됨 (ID: {todo.id}): {todo.title}"
+    tags_str = f" tags=[{', '.join(todo.tags)}]" if todo.tags else " tags=[]"
+    return f"추가됨 (ID: {todo.id}): {todo.title}{tags_str}"
 
 
 def fmt_add_error(message: str) -> str:

@@ -10,6 +10,10 @@ from todo_lib.repository import TodoRepository
 # 날짜 형식 정규식
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+# 태그 검증 상수
+TAG_RE = re.compile(r'^[\w가-힣\-]{1,20}$', re.UNICODE)
+MAX_TAGS = 5
+
 
 # ---------------------------------------------------------------------------
 # 검증 함수
@@ -58,6 +62,23 @@ def validate_status_filter(status: str | None) -> str | None:
     return status
 
 
+def validate_tags(tags: list[str]) -> list[str]:
+    """태그 목록을 검증하고 중복 제거된 목록을 반환한다. 유효하지 않으면 ValueError."""
+    if len(tags) > MAX_TAGS:
+        raise ValueError(f"태그는 최대 {MAX_TAGS}개까지 허용됩니다. (현재 {len(tags)}개)")
+    seen: dict[str, None] = {}
+    for tag in tags:
+        if not tag:
+            raise ValueError("태그는 빈 값일 수 없습니다.")
+        if not TAG_RE.match(tag):
+            raise ValueError(
+                f"태그에 허용되지 않는 문자가 포함되어 있습니다: '{tag}'. "
+                "알파벳·숫자·한글·하이픈·언더스코어만 허용됩니다 (1~20자)."
+            )
+        seen[tag] = None
+    return list(seen.keys())
+
+
 # ---------------------------------------------------------------------------
 # 유스케이스
 # ---------------------------------------------------------------------------
@@ -73,11 +94,13 @@ class TodoService:
         title: str,
         due_date: str | None = None,
         priority: str | None = None,
+        tags: list[str] | None = None,
     ) -> Todo:
         """새 Todo를 생성하고 저장한다."""
         clean_title = validate_title(title)
         clean_due = validate_due_date(due_date)
         clean_priority = validate_priority(priority)
+        clean_tags = validate_tags(tags or [])
 
         now = datetime.utcnow()
         todo = Todo(
@@ -87,17 +110,19 @@ class TodoService:
             created_at=now,
             updated_at=now,
         )
+        todo.tags = clean_tags
         return self._repo.add(todo)
 
     def list_todos(
         self,
         status: str | None = None,
         priority: str | None = None,
+        tag: str | None = None,
     ) -> list[Todo]:
         """조건에 맞는 Todo 목록을 반환한다."""
         clean_status = validate_status_filter(status)
         clean_priority = validate_priority(priority)
-        return self._repo.list_all(status=clean_status, priority=clean_priority)
+        return self._repo.list_all(status=clean_status, priority=clean_priority, tag=tag)
 
     def mark_done(self, todo_id: int) -> tuple[Todo, bool]:
         """Todo를 완료 처리한다. (todo, already_done) 튜플을 반환한다."""

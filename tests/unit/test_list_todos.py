@@ -25,6 +25,15 @@ def seeded_service(service):
     return service
 
 
+@pytest.fixture
+def tagged_service(service):
+    """태그가 있는 시드 데이터."""
+    service.add_todo("업무1", tags=["work"])
+    service.add_todo("업무2", tags=["work", "urgent"])
+    service.add_todo("개인작업", tags=["personal"])
+    return service
+
+
 class TestListTodos:
     def test_빈_목록_반환(self, service):
         todos = service.list_todos()
@@ -70,3 +79,32 @@ class TestListTodos:
         pending = seeded_service.list_todos(status="pending")
         done = seeded_service.list_todos(status="done")
         assert len(pending) + len(done) == len(all_todos)
+
+    def test_tag_필터_None(self, tagged_service):
+        """tag=None일 때 모든 항목을 반환한다."""
+        todos = tagged_service.list_todos(tag=None)
+        assert len(todos) == 3
+
+    def test_tag_필터_work(self, tagged_service):
+        """tag='work'로 'work' 태그를 가진 항목만 반환한다."""
+        todos = tagged_service.list_todos(tag="work")
+        assert len(todos) == 2
+        assert all("work" in t.tags for t in todos)
+
+    def test_tag_필터_personal(self, tagged_service):
+        """tag='personal'로 'personal' 태그를 가진 항목만 반환한다."""
+        todos = tagged_service.list_todos(tag="personal")
+        assert len(todos) == 1
+        assert todos[0].tags == ["personal"]
+
+    def test_tag_필터_없는_태그(self, tagged_service):
+        """존재하지 않는 태그로 필터하면 빈 목록을 반환한다."""
+        todos = tagged_service.list_todos(tag="notfound")
+        assert todos == []
+
+    def test_tag_status_조합_필터(self, tagged_service):
+        """tag와 status를 함께 필터링할 수 있다. (모두 pending)"""
+        todos = tagged_service.list_todos(tag="work", status="pending")
+        assert len(todos) == 2
+        assert all(t.status == "pending" for t in todos)
+        assert all("work" in t.tags for t in todos)

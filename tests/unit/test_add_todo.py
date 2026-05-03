@@ -57,3 +57,46 @@ class TestAddTodo:
         service.delete_todo(first_id)
         todo2 = service.add_todo("새 항목")
         assert todo2.id > first_id
+
+    def test_단일_태그_포함_추가(self, service):
+        """단일 태그를 포함하여 추가한다."""
+        todo = service.add_todo("작업", tags=["work"])
+        assert todo.tags == ["work"]
+
+    def test_다중_태그_포함_추가(self, service):
+        """여러 태그를 포함하여 추가한다."""
+        todo = service.add_todo("긴급 작업", tags=["work", "urgent"])
+        assert todo.tags == ["work", "urgent"]
+
+    def test_태그_없이_추가_하위호환(self, service):
+        """태그 없이 추가하는 기존 방식도 지원한다."""
+        todo = service.add_todo("태그 없는 작업")
+        assert todo.tags == []
+
+    def test_빈_태그_목록_명시_추가(self, service):
+        """명시적으로 빈 태그 목록을 전달해도 동작한다."""
+        todo = service.add_todo("명시적 빈 태그", tags=[])
+        assert todo.tags == []
+
+    def test_태그_검증_6개_오류(self, service):
+        """6개 이상 태그는 ValueError를 발생시킨다."""
+        with pytest.raises(ValueError, match="태그는 최대 5개"):
+            service.add_todo("많은 태그", tags=["a", "b", "c", "d", "e", "f"])
+
+    def test_태그_중복_제거(self, service):
+        """중복된 태그는 제거된다."""
+        todo = service.add_todo("작업", tags=["work", "work", "urgent"])
+        assert todo.tags == ["work", "urgent"]
+
+    def test_태그_마감일_우선순위_조합(self, service):
+        """태그와 마감일, 우선순위를 함께 추가할 수 있다."""
+        todo = service.add_todo(
+            "복합 작업",
+            due_date="2026-12-31",
+            priority="high",
+            tags=["work", "urgent"],
+        )
+        assert todo.title == "복합 작업"
+        assert todo.due_date == "2026-12-31"
+        assert todo.priority == "high"
+        assert todo.tags == ["work", "urgent"]
