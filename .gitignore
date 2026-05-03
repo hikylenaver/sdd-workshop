@@ -3,6 +3,5 @@ __pycache__/
 .env
 node_modules/
 .DS_Store
-Thumbs.db
 d01/
 .vscode/

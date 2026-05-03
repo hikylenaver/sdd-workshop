@@ -11,10 +11,10 @@
 
 **Purpose**: 프로젝트 실행/테스트 기반과 기본 디렉터리 구조 준비
 
-- [ ] T001 `todo_lib/`, `cli/`, `tests/unit/`, `tests/integration/`, `tests/contract/` 디렉터리 및 `__init__.py` 생성
-- [ ] T002 `pyproject.toml`에 Python 3.12, runtime 의존성(typer, sqlalchemy), dev 의존성(pytest, pytest-cov), `todo` 스크립트 엔트리 정의
-- [ ] T003 [P] `README` 실행 예시를 `specs/001-cli-todo-app/quickstart.md` 기준으로 정렬
-- [ ] T004 [P] `tests/conftest.py`에 공통 fixture 골격(임시 DB 경로, CLI runner) 생성
+- [X] T001 `todo_lib/`, `cli/`, `tests/unit/`, `tests/integration/`, `tests/contract/` 디렉터리 및 `__init__.py` 생성
+- [X] T002 `pyproject.toml`에 Python 3.12, runtime 의존성(typer, sqlalchemy), dev 의존성(pytest, pytest-cov), `todo` 스크립트 엔트리 정의
+- [X] T003 [P] `README` 실행 예시를 `specs/001-cli-todo-app/quickstart.md` 기준으로 정렬
+- [X] T004 [P] `tests/conftest.py`에 공통 fixture 골격(임시 DB 경로, CLI runner) 생성
 
 ---
 
@@ -24,14 +24,14 @@
 
 **⚠️ CRITICAL**: 이 단계 완료 전에는 User Story 구현을 시작하지 않는다.
 
-- [ ] T005 `todo_lib/models.py`에 `Todo` 도메인 모델 및 상태/우선순위 상수 정의
-- [ ] T006 `todo_lib/db.py`에 SQLite 엔진/세션 팩토리와 기본 DB 경로(`~/.todo/todo.db`) 초기화 구현
-- [ ] T007 `todo_lib/repository.py`에 SQLAlchemy 기반 `TodoRepository` 구체 클래스 구현(추상 인터페이스 금지)
-- [ ] T008 `todo_lib/services.py`에 `TodoService` 골격 및 공통 검증 함수(제목 길이, 날짜 형식, 우선순위) 구현
-- [ ] T009 `cli/formatters.py`에 목록/단건 메시지 출력 포맷 함수 구현
-- [ ] T010 `cli/main.py`에 Typer 앱 생성 및 명령 등록 골격(add/list/done/delete) 구현
-- [ ] T011 `tests/unit/test_foundation_validation.py`에 공통 검증 함수 단위 테스트 추가
-- [ ] T012 `tests/integration/test_foundation_db_path.py`에 고정 DB 경로 및 세션 재실행 영속성 테스트 추가
+- [X] T005 `todo_lib/models.py`에 `Todo` 도메인 모델 및 상태/우선순위 상수 정의
+- [X] T006 `todo_lib/db.py`에 SQLite 엔진/세션 팩토리와 기본 DB 경로(`~/.todo/todo.db`) 초기화 구현
+- [X] T007 `todo_lib/repository.py`에 SQLAlchemy 기반 `TodoRepository` 구체 클래스 구현(추상 인터페이스 금지)
+- [X] T008 `todo_lib/services.py`에 `TodoService` 골격 및 공통 검증 함수(제목 길이, 날짜 형식, 우선순위) 구현
+- [X] T009 `cli/formatters.py`에 목록/단건 메시지 출력 포맷 함수 구현
+- [X] T010 `cli/main.py`에 Typer 앱 생성 및 명령 등록 골격(add/list/done/delete) 구현
+- [X] T011 `tests/unit/test_foundation_validation.py`에 공통 검증 함수 단위 테스트 추가
+- [X] T012 `tests/integration/test_foundation_db_path.py`에 고정 DB 경로 및 세션 재실행 영속성 테스트 추가
 
 **Checkpoint**: 공통 기반 준비 완료. User Story 구현 시작 가능.
 
@@ -45,16 +45,16 @@
 
 ### Tests for User Story 1 (REQUIRED)
 
-- [ ] T013 [P] [US1] `tests/contract/test_cli_contract.py`에 `todo add` 시그니처/옵션 계약 테스트 추가
-- [ ] T014 [P] [US1] `tests/unit/test_add_todo.py`에 제목/우선순위/날짜 검증 실패 케이스 단위 테스트 추가
-- [ ] T015 [P] [US1] `tests/integration/test_cli_add.py`에 add 성공/실패 CLI 통합 테스트 추가
+- [X] T013 [P] [US1] `tests/contract/test_cli_contract.py`에 `todo add` 시그니처/옵션 계약 테스트 추가
+- [X] T014 [P] [US1] `tests/unit/test_add_todo.py`에 제목/우선순위/날짜 검증 실패 케이스 단위 테스트 추가
+- [X] T015 [P] [US1] `tests/integration/test_cli_add.py`에 add 성공/실패 CLI 통합 테스트 추가
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] `todo_lib/services.py`에 add 유스케이스 구현(제목 1~200자, due 형식, priority 검증)
-- [ ] T017 [US1] `todo_lib/repository.py`에 add 저장 및 자동 증가 ID 반환 로직 구현(삭제 ID 미재사용)
-- [ ] T018 [US1] `cli/main.py`에 `todo add "<제목>" [--due] [--priority]` 명령 구현
-- [ ] T019 [US1] `cli/formatters.py`에 add 성공/오류 메시지 포맷 구현 및 연결
+- [X] T016 [US1] `todo_lib/services.py`에 add 유스케이스 구현(제목 1~200자, due 형식, priority 검증)
+- [X] T017 [US1] `todo_lib/repository.py`에 add 저장 및 자동 증가 ID 반환 로직 구현(삭제 ID 미재사용)
+- [X] T018 [US1] `cli/main.py`에 `todo add "<제목>" [--due] [--priority]` 명령 구현
+- [X] T019 [US1] `cli/formatters.py`에 add 성공/오류 메시지 포맷 구현 및 연결
 
 **Checkpoint**: US1 단독 동작 및 테스트 통과.
 
@@ -68,16 +68,16 @@
 
 ### Tests for User Story 2 (REQUIRED)
 
-- [ ] T020 [P] [US2] `tests/contract/test_cli_contract.py`에 `todo list` 옵션 계약 테스트 추가
-- [ ] T021 [P] [US2] `tests/unit/test_list_todos.py`에 필터 조합/정렬 로직 단위 테스트 추가
-- [ ] T022 [P] [US2] `tests/integration/test_cli_list.py`에 빈 목록/전체/필터 CLI 통합 테스트 추가
+- [X] T020 [P] [US2] `tests/contract/test_cli_contract.py`에 `todo list` 옵션 계약 테스트 추가
+- [X] T021 [P] [US2] `tests/unit/test_list_todos.py`에 필터 조합/정렬 로직 단위 테스트 추가
+- [X] T022 [P] [US2] `tests/integration/test_cli_list.py`에 빈 목록/전체/필터 CLI 통합 테스트 추가
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] `todo_lib/repository.py`에 목록 조회 질의 구현(기본 ID ASC, 상태/우선순위 조합 필터)
-- [ ] T024 [US2] `todo_lib/services.py`에 list 유스케이스 구현(필터 파라미터 검증 포함)
-- [ ] T025 [US2] `cli/main.py`에 `todo list [--filter] [--priority]` 명령 구현
-- [ ] T026 [US2] `cli/formatters.py`에 빈 목록/테이블형 목록 출력 포맷 구현
+- [X] T023 [US2] `todo_lib/repository.py`에 목록 조회 질의 구현(기본 ID ASC, 상태/우선순위 조합 필터)
+- [X] T024 [US2] `todo_lib/services.py`에 list 유스케이스 구현(필터 파라미터 검증 포함)
+- [X] T025 [US2] `cli/main.py`에 `todo list [--filter] [--priority]` 명령 구현
+- [X] T026 [US2] `cli/formatters.py`에 빈 목록/테이블형 목록 출력 포맷 구현
 
 **Checkpoint**: US2 단독 동작 및 테스트 통과.
 
@@ -91,16 +91,16 @@
 
 ### Tests for User Story 3 (REQUIRED)
 
-- [ ] T027 [P] [US3] `tests/contract/test_cli_contract.py`에 `todo done <id>` 계약 테스트 추가
-- [ ] T028 [P] [US3] `tests/unit/test_mark_done.py`에 상태 전이/재요청/id 미존재 단위 테스트 추가
-- [ ] T029 [P] [US3] `tests/integration/test_cli_done.py`에 CLI 완료 처리 통합 테스트 추가
+- [X] T027 [P] [US3] `tests/contract/test_cli_contract.py`에 `todo done <id>` 계약 테스트 추가
+- [X] T028 [P] [US3] `tests/unit/test_mark_done.py`에 상태 전이/재요청/id 미존재 단위 테스트 추가
+- [X] T029 [P] [US3] `tests/integration/test_cli_done.py`에 CLI 완료 처리 통합 테스트 추가
 
 ### Implementation for User Story 3
 
-- [ ] T030 [US3] `todo_lib/repository.py`에 done 업데이트 및 대상 조회 로직 구현
-- [ ] T031 [US3] `todo_lib/services.py`에 done 유스케이스 구현(idempotent 처리 포함)
-- [ ] T032 [US3] `cli/main.py`에 `todo done <id>` 명령 구현
-- [ ] T033 [US3] `cli/formatters.py`에 done 성공/이미 완료/미존재 메시지 포맷 구현
+- [X] T030 [US3] `todo_lib/repository.py`에 done 업데이트 및 대상 조회 로직 구현
+- [X] T031 [US3] `todo_lib/services.py`에 done 유스케이스 구현(idempotent 처리 포함)
+- [X] T032 [US3] `cli/main.py`에 `todo done <id>` 명령 구현
+- [X] T033 [US3] `cli/formatters.py`에 done 성공/이미 완료/미존재 메시지 포맷 구현
 
 **Checkpoint**: US3 단독 동작 및 테스트 통과.
 
@@ -114,16 +114,16 @@
 
 ### Tests for User Story 4 (REQUIRED)
 
-- [ ] T034 [P] [US4] `tests/contract/test_cli_contract.py`에 `todo delete <id>` 계약 테스트 추가
-- [ ] T035 [P] [US4] `tests/unit/test_delete_todo.py`에 삭제 성공/미존재 단위 테스트 추가
-- [ ] T036 [P] [US4] `tests/integration/test_cli_delete.py`에 CLI 삭제 통합 테스트 추가
+- [X] T034 [P] [US4] `tests/contract/test_cli_contract.py`에 `todo delete <id>` 계약 테스트 추가
+- [X] T035 [P] [US4] `tests/unit/test_delete_todo.py`에 삭제 성공/미존재 단위 테스트 추가
+- [X] T036 [P] [US4] `tests/integration/test_cli_delete.py`에 CLI 삭제 통합 테스트 추가
 
 ### Implementation for User Story 4
 
-- [ ] T037 [US4] `todo_lib/repository.py`에 delete 로직 구현(상태 무관 삭제)
-- [ ] T038 [US4] `todo_lib/services.py`에 delete 유스케이스 구현
-- [ ] T039 [US4] `cli/main.py`에 `todo delete <id>` 명령 구현
-- [ ] T040 [US4] `cli/formatters.py`에 delete 성공/미존재 메시지 포맷 구현
+- [X] T037 [US4] `todo_lib/repository.py`에 delete 로직 구현(상태 무관 삭제)
+- [X] T038 [US4] `todo_lib/services.py`에 delete 유스케이스 구현
+- [X] T039 [US4] `cli/main.py`에 `todo delete <id>` 명령 구현
+- [X] T040 [US4] `cli/formatters.py`에 delete 성공/미존재 메시지 포맷 구현
 
 **Checkpoint**: US4 단독 동작 및 테스트 통과.
 
@@ -133,11 +133,11 @@
 
 **Purpose**: 전체 스토리에 공통 영향을 주는 마감 품질 작업
 
-- [ ] T041 [P] `tests/contract/test_cli_contract.py`에 Exit Code(0/1/2) 공통 검증 케이스 보강
-- [ ] T042 `tests/integration/` 전체 실행 시나리오 테스트 추가(세션 재실행 영속성 포함)
-- [ ] T043 [P] `specs/001-cli-todo-app/quickstart.md` 명령 예시를 실제 구현 옵션과 동기화
-- [ ] T044 `pyproject.toml`의 pytest-cov 설정 정리 및 커버리지 임계치(예: 90%) 설정
-- [ ] T045 `README`에 설치/실행/테스트/DB 경로/제약사항(의존성 추가 금지) 문서화
+- [X] T041 [P] `tests/contract/test_cli_contract.py`에 Exit Code(0/1/2) 공통 검증 케이스 보강
+- [X] T042 `tests/integration/` 전체 실행 시나리오 테스트 추가(세션 재실행 영속성 포함)
+- [X] T043 [P] `specs/001-cli-todo-app/quickstart.md` 명령 예시를 실제 구현 옵션과 동기화
+- [X] T044 `pyproject.toml`의 pytest-cov 설정 정리 및 커버리지 임계치(예: 90%) 설정
+- [X] T045 `README`에 설치/실행/테스트/DB 경로/제약사항(의존성 추가 금지) 문서화
 
 ---
 
