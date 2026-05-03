@@ -33,8 +33,9 @@
 **⚠️ CRITICAL**: US1·US2 어느 것도 이 Phase 이전에 시작할 수 없다.
 
 - [ ] T002 [P] `todo_lib/models.py`에 `tags_json` TEXT 컬럼 및 `tags` property(getter/setter) 추가
-- [ ] T003 [P] `todo_lib/db.py`에 `_migrate_add_tags_column()` 함수 추가 및 `create_db_engine()` 내 호출 등록
+- [ ] T003 [P] `todo_lib/db.py`에 `_migrate_add_tags_column()` 함수 추가 및 `create_db_engine()` 내 호출 등록 (T002 완료 후 권장 — T003의 `ALTER TABLE`은 T002의 모델 정의에 의존)
 - [ ] T004 [P] `todo_lib/services.py`에 `TAG_RE`, `MAX_TAGS` 상수 및 `validate_tags()` 함수 추가
+- [ ] T005a `tests/unit/test_db_migration.py` 신규 작성 — 기존 DB에 `tags_json` 컬럼 없을 때 `_migrate_add_tags_column()` 실행 후 컬럼 존재 확인, 이미 있을 때 멱등성(재실행 오류 없음) 확인 (T003 완료 후)
 
 **Checkpoint**: 모델·마이그레이션·검증 함수 준비 완료 — US1·US2 병렬 착수 가능
 
@@ -81,7 +82,7 @@
 > **NOTE: 아래 테스트를 먼저 작성하고, 반드시 FAIL 상태를 확인한 뒤 구현으로 진행한다.**
 
 - [ ] T013 [P] [US2] `tests/unit/test_list_todos.py`에 `tag` 필터 케이스 추가 — `tag=None` 전체 반환, `tag="work"` 해당 항목만 반환, 존재하지 않는 태그 빈 목록 반환
-- [ ] T014 [P] [US2] `tests/integration/test_cli_list.py`에 US2 AC1~AC5 통합 테스트 추가 (`--tag work` 단독, 태그 없는 항목 제외, 없는 태그 빈 메시지, `--tag + --filter`, `--tag + --priority`)
+- [ ] T014 [P] [US2] `tests/integration/test_cli_list.py`에 US2 AC1~AC5 통합 테스트 추가 (`--tag work` 단독, 태그 없는 항목 제외, 없는 태그 빈 메시지, `--tag + --filter`, `--tag + --priority`) (T012 완료 후 — 동일 파일 수정, 충돌 방지)
 
 ### US2 구현
 
@@ -163,13 +164,13 @@ T018, T019 [병렬 가능] (Polish)
 | Phase | 태스크 수 | User Story | 병렬 가능 |
 |-------|-----------|-----------|---------|
 | Phase 1: Setup | 1 | — | — |
-| Phase 2: Foundational | 3 | — | T002, T003, T004 |
+| Phase 2: Foundational | 4 | — | T002, T003, T004 |
 | Phase 3: US1 테스트 | 3 | US1 | T005, T006, T007 |
 | Phase 3: US1 구현 | 5 | US1 | T011, T012 |
 | Phase 4: US2 테스트 | 2 | US2 | T013, T014 |
 | Phase 4: US2 구현 | 3 | US2 | — |
 | Phase 5: Polish | 2 | — | T018, T019 |
-| **합계** | **19** | | |
+| **합계** | **20** | | |
 
 **병렬 기회**: 7개 태스크 그룹 병렬 실행 가능  
 **MVP 범위**: T001~T012 (Phase 1~3, US1만)  
