@@ -1,6 +1,6 @@
 <!-- SPECKIT START -->
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+현재 구현 계획 문서: specs/001-cli-todo-app/plan.md
+구현 전/중에는 위 plan을 우선 참조해 기술 스택, 구조, 명령 규약, 테스트 전략을 따른다.
 <!-- SPECKIT END -->
 
 # 언어 규칙
