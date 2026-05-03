@@ -1,6 +1,6 @@
 """CLI 진입점: Typer 앱 및 명령 등록."""
 import sys
-from typing import Optional
+from typing import List, Optional
 
 import typer
 
@@ -26,11 +26,12 @@ def add(
     title: str = typer.Argument(..., help="추가할 할 일 제목"),
     due: Optional[str] = typer.Option(None, "--due", help="마감일 (YYYY-MM-DD)"),
     priority: Optional[str] = typer.Option(None, "--priority", help="우선순위 (high/medium/low)"),
+    tag: Optional[List[str]] = typer.Option(None, "--tag", help="태그 (여러 번 사용 가능)"),
 ) -> None:
     """새 ToDo 항목을 추가한다."""
     service = _get_service()
     try:
-        todo = service.add_todo(title=title, due_date=due, priority=priority)
+        todo = service.add_todo(title=title, due_date=due, priority=priority, tags=tag or [])
         typer.echo(formatters.fmt_add_success(todo))
     except ValueError as e:
         typer.echo(formatters.fmt_add_error(str(e)), err=True)

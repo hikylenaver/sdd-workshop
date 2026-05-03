@@ -94,11 +94,13 @@ class TodoService:
         title: str,
         due_date: str | None = None,
         priority: str | None = None,
+        tags: list[str] | None = None,
     ) -> Todo:
         """새 Todo를 생성하고 저장한다."""
         clean_title = validate_title(title)
         clean_due = validate_due_date(due_date)
         clean_priority = validate_priority(priority)
+        clean_tags = validate_tags(tags or [])
 
         now = datetime.utcnow()
         todo = Todo(
@@ -108,6 +110,7 @@ class TodoService:
             created_at=now,
             updated_at=now,
         )
+        todo.tags = clean_tags
         return self._repo.add(todo)
 
     def list_todos(

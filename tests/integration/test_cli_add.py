@@ -50,3 +50,71 @@ def test_add_여러_항목_순차_ID(tmp_db_path):
     runner.invoke(app, ["add", "첫 번째"])
     result = runner.invoke(app, ["add", "두 번째"])
     assert "ID: 2" in result.output
+
+
+# US1: 태그 포함 추가 (T017)
+def test_add_단일_태그_AC1(tmp_db_path):
+    """AC1: --tag work 옵션으로 단일 태그를 지정할 수 있다."""
+    result = runner.invoke(app, ["add", "작업", "--tag", "work"])
+    assert result.exit_code == 0
+    assert "tags=[work]" in result.output
+
+
+def test_add_다중_태그_AC2(tmp_db_path):
+    """AC2: --tag를 여러 번 사용하여 다중 태그를 지정할 수 있다."""
+    result = runner.invoke(
+        app, ["add", "긴급 작업", "--tag", "work", "--tag", "urgent"]
+    )
+    assert result.exit_code == 0
+    assert "tags=[work, urgent]" in result.output or "tags=[urgent, work]" in result.output
+
+
+def test_add_최대_5개_태그_AC3(tmp_db_path):
+    """AC3: --tag 5개까지 모두 지정할 수 있다."""
+    result = runner.invoke(
+        app,
+        [
+            "add",
+            "많은 태그",
+            "--tag", "tag1",
+            "--tag", "tag2",
+            "--tag", "tag3",
+            "--tag", "tag4",
+            "--tag", "tag5",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "tags=[" in result.output
+
+
+def test_add_6개_태그_오류_AC4(tmp_db_path):
+    """AC4: --tag 6개 이상은 exit code 2와 오류 메시지를 반환한다."""
+    result = runner.invoke(
+        app,
+        [
+            "add",
+            "너무 많은 태그",
+            "--tag", "tag1",
+            "--tag", "tag2",
+            "--tag", "tag3",
+            "--tag", "tag4",
+            "--tag", "tag5",
+            "--tag", "tag6",
+        ],
+    )
+    assert result.exit_code == 2
+    assert "태그는 최대" in result.output
+
+
+def test_add_21자_태그_오류_AC5(tmp_db_path):
+    """AC5: 21자 이상 태그는 exit code 2와 오류 메시지를 반환한다."""
+    result = runner.invoke(app, ["add", "작업", "--tag", "a" * 21])
+    assert result.exit_code == 2
+    assert "허용되지 않는 문자" in result.output
+
+
+def test_add_빈_태그_오류_AC6(tmp_db_path):
+    """AC6: 빈 태그는 exit code 2와 오류 메시지를 반환한다."""
+    result = runner.invoke(app, ["add", "작업", "--tag", ""])
+    assert result.exit_code == 2
+    assert "빈 값" in result.output or "허용되지 않는" in result.output
