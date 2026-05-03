@@ -25,6 +25,7 @@ class TodoRepository:
         self,
         status: str | None = None,
         priority: str | None = None,
+        tag: str | None = None,
     ) -> list[Todo]:
         """조건에 맞는 Todo 목록을 ID 오름차순으로 반환한다."""
         query = self._session.query(Todo)
@@ -32,7 +33,11 @@ class TodoRepository:
             query = query.filter(Todo.status == status)
         if priority is not None:
             query = query.filter(Todo.priority == priority)
-        return query.order_by(Todo.id).all()
+        todos = query.order_by(Todo.id).all()
+        # tag 필터는 Python 레벨에서 적용 (간단함)
+        if tag is not None:
+            todos = [t for t in todos if tag in t.tags]
+        return todos
 
     def mark_done(self, todo: Todo) -> Todo:
         """Todo를 완료 상태로 변경한다. 이미 완료 상태이면 그대로 반환한다."""

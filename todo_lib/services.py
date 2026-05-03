@@ -117,11 +117,12 @@ class TodoService:
         self,
         status: str | None = None,
         priority: str | None = None,
+        tag: str | None = None,
     ) -> list[Todo]:
         """조건에 맞는 Todo 목록을 반환한다."""
         clean_status = validate_status_filter(status)
         clean_priority = validate_priority(priority)
-        return self._repo.list_all(status=clean_status, priority=clean_priority)
+        return self._repo.list_all(status=clean_status, priority=clean_priority, tag=tag)
 
     def mark_done(self, todo_id: int) -> tuple[Todo, bool]:
         """Todo를 완료 처리한다. (todo, already_done) 튜플을 반환한다."""

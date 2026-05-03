@@ -42,11 +42,12 @@ def add(
 def list_todos(
     filter_: Optional[str] = typer.Option(None, "--filter", help="상태 필터 (done/pending)"),
     priority: Optional[str] = typer.Option(None, "--priority", help="우선순위 필터 (high/medium/low)"),
+    tag: Optional[str] = typer.Option(None, "--tag", help="태그 필터"),
 ) -> None:
     """ToDo 목록을 조회한다."""
     service = _get_service()
     try:
-        todos = service.list_todos(status=filter_, priority=priority)
+        todos = service.list_todos(status=filter_, priority=priority, tag=tag)
     except ValueError as e:
         typer.echo(formatters.fmt_add_error(str(e)), err=True)
         raise typer.Exit(code=2)
