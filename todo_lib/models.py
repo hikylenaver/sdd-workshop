@@ -1,4 +1,5 @@
 """도메인 모델 및 상수 정의."""
+import json
 from datetime import datetime
 
 from sqlalchemy import DateTime, Integer, String, Text
@@ -36,6 +37,19 @@ class Todo(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
     )
+    tags_json: Mapped[str] = mapped_column(
+        Text, nullable=False, default="[]", server_default="'[]'"
+    )
+
+    @property
+    def tags(self) -> list[str]:
+        """태그 목록을 반환한다."""
+        return json.loads(self.tags_json)
+
+    @tags.setter
+    def tags(self, value: list[str]) -> None:
+        """태그 목록을 JSON으로 직렬화하여 저장한다."""
+        self.tags_json = json.dumps(value, ensure_ascii=False)
 
     def __repr__(self) -> str:
         return f"<Todo id={self.id} title={self.title!r} status={self.status}>"

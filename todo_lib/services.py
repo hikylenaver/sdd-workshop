@@ -10,6 +10,10 @@ from todo_lib.repository import TodoRepository
 # 날짜 형식 정규식
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+# 태그 검증 상수
+TAG_RE = re.compile(r'^[\w가-힣\-]{1,20}$', re.UNICODE)
+MAX_TAGS = 5
+
 
 # ---------------------------------------------------------------------------
 # 검증 함수
@@ -56,6 +60,23 @@ def validate_status_filter(status: str | None) -> str | None:
         allowed = ", ".join(sorted(ALLOWED_STATUSES))
         raise ValueError(f"상태 필터는 {allowed} 중 하나여야 합니다: '{status}'")
     return status
+
+
+def validate_tags(tags: list[str]) -> list[str]:
+    """태그 목록을 검증하고 중복 제거된 목록을 반환한다. 유효하지 않으면 ValueError."""
+    if len(tags) > MAX_TAGS:
+        raise ValueError(f"태그는 최대 {MAX_TAGS}개까지 허용됩니다. (현재 {len(tags)}개)")
+    seen: dict[str, None] = {}
+    for tag in tags:
+        if not tag:
+            raise ValueError("태그는 빈 값일 수 없습니다.")
+        if not TAG_RE.match(tag):
+            raise ValueError(
+                f"태그에 허용되지 않는 문자가 포함되어 있습니다: '{tag}'. "
+                "알파벳·숫자·한글·하이픈·언더스코어만 허용됩니다 (1~20자)."
+            )
+        seen[tag] = None
+    return list(seen.keys())
 
 
 # ---------------------------------------------------------------------------

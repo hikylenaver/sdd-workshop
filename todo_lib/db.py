@@ -20,11 +20,23 @@ def get_db_path() -> str:
     return str(todo_dir / "todo.db")
 
 
+def _migrate_add_tags_column(engine: Engine) -> None:
+    """기존 DB에 tags_json 컬럼이 없으면 추가한다."""
+    from sqlalchemy import text
+
+    with engine.connect() as conn:
+        cols = [row[1] for row in conn.execute(text("PRAGMA table_info(todos)"))]
+        if "tags_json" not in cols:
+            conn.execute(text("ALTER TABLE todos ADD COLUMN tags_json TEXT NOT NULL DEFAULT '[]'"))
+            conn.commit()
+
+
 def create_db_engine(db_path: str | None = None) -> Engine:
     """SQLite 엔진을 생성하고 테이블을 초기화한다."""
     path = db_path or get_db_path()
     engine = create_engine(f"sqlite:///{path}", echo=False)
     Base.metadata.create_all(engine)
+    _migrate_add_tags_column(engine)  # 기존 DB 호환
     return engine
 
 

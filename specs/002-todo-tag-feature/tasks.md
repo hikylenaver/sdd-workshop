@@ -20,7 +20,7 @@
 **Purpose**: 신규 기능 작업 전 기존 테스트가 모두 통과하는지 확인한다.  
 **⚠️ 이 Phase가 GREEN이어야 이후 단계를 진행할 수 있다.**
 
-- [ ] T001 기존 테스트 전체 실행 후 모두 통과 확인: `pytest tests/ -v --tb=short`
+- [X] T001 기존 테스트 전체 실행 후 모두 통과 확인: `pytest tests/ -v --tb=short`
 
 **Checkpoint**: 기존 테스트 전체 GREEN — 이후 작업의 기준선 확보
 
@@ -32,10 +32,10 @@
 
 **⚠️ CRITICAL**: US1·US2 어느 것도 이 Phase 이전에 시작할 수 없다.
 
-- [ ] T002 [P] `todo_lib/models.py`에 `tags_json` TEXT 컬럼 및 `tags` property(getter/setter) 추가
-- [ ] T003 [P] `todo_lib/db.py`에 `_migrate_add_tags_column()` 함수 추가 및 `create_db_engine()` 내 호출 등록 (T002 완료 후 권장 — T003의 `ALTER TABLE`은 T002의 모델 정의에 의존)
-- [ ] T004 [P] `todo_lib/services.py`에 `TAG_RE`, `MAX_TAGS` 상수 및 `validate_tags()` 함수 추가
-- [ ] T005a `tests/unit/test_db_migration.py` 신규 작성 — 기존 DB에 `tags_json` 컬럼 없을 때 `_migrate_add_tags_column()` 실행 후 컬럼 존재 확인, 이미 있을 때 멱등성(재실행 오류 없음) 확인 (T003 완료 후)
+- [X] T002 [P] `todo_lib/models.py`에 `tags_json` TEXT 컬럼 및 `tags` property(getter/setter) 추가
+- [X] T003 [P] `todo_lib/db.py`에 `_migrate_add_tags_column()` 함수 추가 및 `create_db_engine()` 내 호출 등록 (T002 완료 후 권장 — T003의 `ALTER TABLE`은 T002의 모델 정의에 의존)
+- [X] T004 [P] `todo_lib/services.py`에 `TAG_RE`, `MAX_TAGS` 상수 및 `validate_tags()` 함수 추가
+- [X] T005a `tests/unit/test_db_migration.py` 신규 작성 — 기존 DB에 `tags_json` 컬럼 없을 때 `_migrate_add_tags_column()` 실행 후 컬럼 존재 확인, 이미 있을 때 멱등성(재실행 오류 없음) 확인 (T003 완료 후)
 
 **Checkpoint**: 모델·마이그레이션·검증 함수 준비 완료 — US1·US2 병렬 착수 가능
 
@@ -53,7 +53,7 @@
 
 > **NOTE: 아래 테스트를 먼저 작성하고, 반드시 FAIL 상태를 확인한 뒤 구현으로 진행한다.**
 
-- [ ] T005 [P] [US1] `tests/unit/test_tag_validation.py` 신규 작성 — `validate_tags()` 단위 테스트 11개 케이스 (빈 목록, 1개, 5개 정상 / 6개 초과, 빈 문자열, 21자, 공백 포함, `@` 포함 오류 / 중복 제거, 한글, 하이픈·언더스코어)
+- [X] T005 [P] [US1] `tests/unit/test_tag_validation.py` 신규 작성 — `validate_tags()` 단위 테스트 14개 케이스 (빈 목록, 1개, 5개 정상 / 6개 초과, 빈 문자열, 21자, 공백 포함, 특수문자 오류 / 중복 제거, 한글, 하이픈·언더스코어, 숫자 시작)
 - [ ] T006 [P] [US1] `tests/unit/test_add_todo.py`에 `tags` 파라미터 케이스 추가 — 태그 포함 추가 성공, 기존 태그 없는 호출 하위 호환 유지
 - [ ] T007 [P] [US1] `tests/integration/test_cli_add.py`에 US1 AC1~AC6 통합 테스트 추가 (`--tag work`, 태그 없음, 태그 5개, 6개 오류, 21자 오류, 빈 태그 오류)
 
